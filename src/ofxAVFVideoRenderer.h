@@ -19,6 +19,11 @@
     AVPlayer *player;
     AVPlayerItem *playerItem;
     AVPlayerLayer *playerLayer;
+    AVAssetReader *assetReader;
+    
+    NSMutableData *amplitudes;
+    int numAmplitudes;
+    float maxAmplitude;
     
     CARenderer *layerRenderer;
     
@@ -27,12 +32,20 @@
     
     BOOL loading;
     BOOL ready;
+    BOOL audioReady;
     BOOL deallocWhenReady;
+    
+    id periodicTimeObserver;
 }
     @property (nonatomic, retain) AVPlayer *player;
     @property (nonatomic, retain) AVPlayerItem *playerItem;
     @property (nonatomic, retain) AVPlayerLayer *playerLayer;
+    @property (nonatomic, retain) AVAssetReader *assetReader;
     @property (nonatomic, retain) CARenderer *layerRenderer;
+
+    @property (nonatomic, retain) NSMutableData *amplitudes;
+    @property (nonatomic, assign) int numAmplitudes;
+    @property (nonatomic, assign) float maxAmplitude;
 
 - (void) loadFile:(NSString *)filename;
 - (void) play;
@@ -40,8 +53,11 @@
 - (void) playerItemDidReachEnd:(NSNotification *) notification;
 //- (void) update;
 - (BOOL) isReady;
+- (BOOL) isAudioReady;
 - (BOOL) isLoading;
 - (void) render;
+
+//- (void)postProcessAmplitude:(float)damping;
 
 - (CGSize) getVideoSize;
 - (CMTime) getVideoDuration;

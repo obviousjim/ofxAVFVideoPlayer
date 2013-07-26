@@ -30,8 +30,25 @@ void testApp::update(){
 void testApp::draw(){
     int i=0;
     for(auto p : videoPlayers) {
+        ofSetColor(ofColor::white);
+        ofFill();
         //p->draw(ofMap(i++, 0, videoPlayers.size(), 0, ofGetWidth()), ofGetHeight()/2 - 108*2, 192*4, 108*4);
 		p->draw(0,0);
+        
+        ofSetColor(ofColor::red);
+        ofNoFill();
+        ofBeginShape();
+        for (int i = 0; i < ofGetWidth(); i++) {
+            ofVertex(i, ofGetHeight() / 2 + p->getAmplitudeAt(i / (float)ofGetWidth()) * ofGetHeight() / 2);
+        }
+        ofEndShape();
+        ofRect(0, ofGetHeight() - 20, p->getAmplitude() * ofGetWidth(), 20);
+        
+        ofSetColor(ofColor::white);
+        ofLine(p->getPosition() * ofGetWidth(), 0, p->getPosition() * ofGetWidth(), ofGetHeight());
+        
+        ofFill();
+        ofRect(0, ofGetHeight() - 20, ofGetWidth() * ABS(p->getAmplitude()), 20);
     }
 
 }
