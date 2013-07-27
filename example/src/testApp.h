@@ -3,6 +3,12 @@
 #include "ofMain.h"
 #include "ofxAVFVideoPlayer.h"
 
+#include "fft.h"
+#include "FFTOctaveAnalyzer.h"
+
+#define BUFFER_SIZE 512
+
+
 class testApp : public ofBaseApp{
 
 	public:
@@ -23,5 +29,11 @@ class testApp : public ofBaseApp{
         std::vector<ofxAVFVideoPlayer *> videoPlayers;
         static const int N_VIDEO_PLAYERS = 1;
     
+    float magnitude[BUFFER_SIZE];
+    float phase[BUFFER_SIZE];
+    float power[BUFFER_SIZE];
+    float freq[BUFFER_SIZE/2];
     
+    FFTOctaveAnalyzer FFTanalyzer;
+    fft		myfft;
 };
