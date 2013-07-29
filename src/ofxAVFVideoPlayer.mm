@@ -132,14 +132,13 @@ float ofxAVFVideoPlayer::getAmplitude() {
 }
 
 float ofxAVFVideoPlayer::getAmplitudeAt(float pos) {
-    pos = MIN(1.0, MAX(0.0, pos));
     if(!moviePlayer || ![moviePlayer isAudioReady] || [moviePlayer numAmplitudes] == 0 || !bInitialized) {
         return 0;
     }
     
     int idx = MIN(floor(pos * [moviePlayer numAmplitudes]), [moviePlayer numAmplitudes] - 1);
-    float amp;
-    [moviePlayer.amplitudes getBytes:&amp range:NSMakeRange(idx * sizeof(float), sizeof(float))];
+    short amp;
+    [moviePlayer.amplitudes getBytes:&amp range:NSMakeRange(idx * sizeof(short), sizeof(short))];
     return ofMap(amp, -[moviePlayer maxAmplitude], [moviePlayer maxAmplitude], -1.0, 1.0);
 }
 
@@ -147,8 +146,8 @@ int ofxAVFVideoPlayer::getNumAmplitudes() {
     return [moviePlayer numAmplitudes];
 }
 
-float * ofxAVFVideoPlayer::getAllAmplitudes() {
-    return (float *)[moviePlayer.amplitudes bytes];
+short * ofxAVFVideoPlayer::getAllAmplitudes() {
+    return (short *)[moviePlayer.amplitudes bytes];
 }
 
 unsigned char* ofxAVFVideoPlayer::getPixels() {

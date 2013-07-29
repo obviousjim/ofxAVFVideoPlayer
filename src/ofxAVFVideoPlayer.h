@@ -33,7 +33,7 @@ public:
     
     float               getAmplitude();
     float               getAmplitudeAt(float pos);
-    float *             getAllAmplitudes();
+    short *             getAllAmplitudes();
     int                 getNumAmplitudes();
     
     OF_DEPRECATED_MSG("Use getTexture()->bind() instead. Ensure decodeMode != OF_QTKIT_DECODE_PIXELS_ONLY.", void bind());
