@@ -31,9 +31,9 @@ public:
     void                play();
     void                stop();
     
-    float               getAmplitude();
-    float               getAmplitudeAt(float pos);
-    short *             getAllAmplitudes();
+    float               getAmplitude(int channel = 0);
+    float               getAmplitudeAt(float pos, int channel = 0);
+    float *             getAllAmplitudes();
     int                 getNumAmplitudes();
     
     OF_DEPRECATED_MSG("Use getTexture()->bind() instead. Ensure decodeMode != OF_QTKIT_DECODE_PIXELS_ONLY.", void bind());
@@ -86,7 +86,7 @@ public:
     bool                isLoading();
     bool                isPlaying();
     bool                errorLoading();
-    
+    bool                isAudioLoaded();    
     
     void                firstFrame();
     void                nextFrame();

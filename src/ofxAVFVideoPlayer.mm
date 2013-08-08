@@ -127,27 +127,40 @@ bool ofxAVFVideoPlayer::isFrameNew() {
     return true;
 }
 
-float ofxAVFVideoPlayer::getAmplitude() {
-    return getAmplitudeAt(getPosition());
+float ofxAVFVideoPlayer::getAmplitude(int channel) {
+    return getAmplitudeAt(getPosition(), channel);
 }
 
-float ofxAVFVideoPlayer::getAmplitudeAt(float pos) {
-    if(!moviePlayer || ![moviePlayer isAudioReady] || [moviePlayer numAmplitudes] == 0 || !bInitialized) {
+float ofxAVFVideoPlayer::getAmplitudeAt(float pos, int channel) {
+    pos = ofClamp(pos, 0, 1);
+    channel = ofClamp(channel, 0, 1);
+    
+    if (!moviePlayer || ![moviePlayer isAudioReady] || [moviePlayer numAmplitudes] == 0 || !bInitialized) {
         return 0;
     }
     
-    int idx = MIN(floor(pos * [moviePlayer numAmplitudes]), [moviePlayer numAmplitudes] - 1);
-    short amp;
-    [moviePlayer.amplitudes getBytes:&amp range:NSMakeRange(idx * sizeof(short), sizeof(short))];
-    return ofMap(amp, -[moviePlayer maxAmplitude], [moviePlayer maxAmplitude], -1.0, 1.0);
+    int idx = (int)(pos * ([moviePlayer numAmplitudes] - 2));
+    
+    // Make sure the index is pointing at the right channel
+    // EZ: I know this is ghetto, but it works...
+    if (idx % 2 == 0 && channel == 1) {
+        ++idx;
+    }
+    else if (idx % 2 == 1 && channel == 0) {
+        --idx;
+    }
+
+    float amp;
+    [moviePlayer.amplitudes getBytes:&amp range:NSMakeRange(idx * sizeof(float), sizeof(float))];
+    return amp;
 }
 
 int ofxAVFVideoPlayer::getNumAmplitudes() {
     return [moviePlayer numAmplitudes];
 }
 
-short * ofxAVFVideoPlayer::getAllAmplitudes() {
-    return (short *)[moviePlayer.amplitudes bytes];
+float * ofxAVFVideoPlayer::getAllAmplitudes() {
+    return (float *)[moviePlayer.amplitudes bytes];
 }
 
 unsigned char* ofxAVFVideoPlayer::getPixels() {
@@ -292,6 +305,10 @@ bool ofxAVFVideoPlayer::errorLoading() {
     
     // Error if movie player is not loading and is not ready
     return (![moviePlayer isLoading] && ![moviePlayer isReady]);
+}
+
+bool ofxAVFVideoPlayer::isAudioLoaded() {
+    return (moviePlayer && [moviePlayer isAudioReady]);
 }
 
 bool ofxAVFVideoPlayer::isPlaying() {

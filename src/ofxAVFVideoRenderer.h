@@ -23,7 +23,6 @@
     
     NSMutableData *amplitudes;
     int numAmplitudes;
-    float maxAmplitude;
     
     CARenderer *layerRenderer;
     
@@ -45,7 +44,6 @@
 
     @property (nonatomic, retain) NSMutableData *amplitudes;
     @property (nonatomic, assign) int numAmplitudes;
-    @property (nonatomic, assign) float maxAmplitude;
 
 - (void) loadFile:(NSString *)filename;
 - (void) play;
