@@ -352,6 +352,9 @@ int count = 0;
     // Pause and rewind.
     [self.player pause];
     [self.player seekToTime:kCMTimeZero];
+    
+    // Reset MovieDone flag, as movie now primed for starting from beginning
+    _bMovieDone = NO;
 }
 
 //--------------------------------------------------------------
